@@ -35,7 +35,7 @@ def printBoard():
     1 _X_|_0_|_X_
     2  X | X | 0
     '''
-    
+
     print ("   " +          "0"      + "   " +      "1"          + "   " +       "2"         + "    .. X AXIS")
     print ("0 _" + boardInputs[0][0] + "_|_" + boardInputs[0][1] + "_|_" + boardInputs[0][2] + "_")
     print ("1 _" + boardInputs[1][0] + "_|_" + boardInputs[1][1] + "_|_" + boardInputs[1][2] + "_")
@@ -56,12 +56,26 @@ def inputXandO():
         print ("Enter input on the board, " + player2name)
 
     while (validInput == False):
-        a = input("Enter input for X axis on the board (integer values only)-> ")
-        b = input("Enter input for Y axis on the board (integer values only)-> ")
-        if boardInputs[b][a] == player1mark or boardInputs[b][a] == player2mark:
-            print ("The position you are trying to mark is already marked earlier, please try again at other position")
+
+        a = raw_input("Enter input for X axis on the board (integer values only)-> ")
+        b = raw_input("Enter input for Y axis on the board (integer values only)-> ")
+
+        a = a[0]
+        b = b[0]
+
+
+        if a.isdigit() == True and b.isdigit() == True:
+            a = int(a)
+            b = int(b)
+            if a < 3 and a >= 0 and b < 3 and b >= 0:
+                if boardInputs[b][a] == player1mark or boardInputs[b][a] == player2mark:
+                    print ("The position you are trying to mark is already marked earlier, please try again at other position")
+                else:
+                    validInput = True
+            else:
+                print ("Enter valid input!1")
         else:
-            validInput = True
+            print ("Enter valid input!2")
 
     if playerNumber == 1:
         boardInputs[b][a] = player1mark
@@ -74,6 +88,13 @@ def inputXandO():
 
 def checkIfWon():
     global boardInputs, player1name, player2name, player1mark, player2mark, playerNumber
+
+    if boardInputs[0][0] != " " and boardInputs[0][1] != " " and boardInputs[0][2] != " ":
+        if boardInputs[1][0] != " " and boardInputs[1][1] != " " and boardInputs[1][2] != " ":
+            if boardInputs[2][0] != " " and boardInputs[2][1] != " " and boardInputs[2][2] != " ":
+                print ("The match is drawn!")
+                return True
+
     # for horizontal rows
     for i in range(0,3):
         if boardInputs[i][0] == boardInputs[i][1] == boardInputs[i][2]:
