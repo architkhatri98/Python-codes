@@ -1,0 +1,123 @@
+from __future__ import print_function
+
+player1name = raw_input("Enter name of player 1 ")
+player2name = raw_input("Enter name of player 2 ")
+playerNumber = 1
+player2mark = None
+print ("Player 1: " + player1name + " and Player2: " + player2name + ", will play a game of tic tac toe!")
+
+while True:
+    player1mark = raw_input(player1name + " select your mark, X or O -> ")
+    if player1mark == 'X' or player1mark == 'x' or player1mark == 'O' or player1mark == 'o':
+        if player1mark == 'X' or player1mark == 'x':
+            player1mark = 'X'
+            player2mark = 'O'
+        else:
+            player1mark = 'O'
+            player2mark = 'X'
+        break
+    else:
+        print ("Retry with a valid input!")
+
+
+print ("%s will go first" %(player1name))
+x = None
+y = None
+
+boardInputs = {0:[" ", " ", " "],1:[" ", " ", " "],2:[" ", " ", " "]}
+
+
+def printBoard():
+    '''
+    Sample of the board with marks
+       0   1   2
+    0 _X_|_0_|_X_
+    1 _X_|_0_|_X_
+    2  X | X | 0
+    '''
+    
+    print ("   " +          "0"      + "   " +      "1"          + "   " +       "2"         + "    .. X AXIS")
+    print ("0 _" + boardInputs[0][0] + "_|_" + boardInputs[0][1] + "_|_" + boardInputs[0][2] + "_")
+    print ("1 _" + boardInputs[1][0] + "_|_" + boardInputs[1][1] + "_|_" + boardInputs[1][2] + "_")
+    print ("2  " + boardInputs[2][0] + " | " + boardInputs[2][1] + " | " + boardInputs[2][2] + " ")
+    print (".")
+    print (".")
+    print ("Y")
+    print ("AXIS")
+
+def inputXandO():
+    global boardInputs, player1name, player2name, player1mark, player2mark, playerNumber
+
+    validInput = False
+
+    if playerNumber == 1:
+        print ("Enter input on the board, " + player1name)
+    else:
+        print ("Enter input on the board, " + player2name)
+
+    while (validInput == False):
+        a = input("Enter input for X axis on the board (integer values only)-> ")
+        b = input("Enter input for Y axis on the board (integer values only)-> ")
+        if boardInputs[b][a] == player1mark or boardInputs[b][a] == player2mark:
+            print ("The position you are trying to mark is already marked earlier, please try again at other position")
+        else:
+            validInput = True
+
+    if playerNumber == 1:
+        boardInputs[b][a] = player1mark
+    elif playerNumber == 0:
+        boardInputs[b][a] = player2mark
+
+    playerNumber += 1
+    playerNumber %= 2
+
+
+def checkIfWon():
+    global boardInputs, player1name, player2name, player1mark, player2mark, playerNumber
+    # for horizontal rows
+    for i in range(0,3):
+        if boardInputs[i][0] == boardInputs[i][1] == boardInputs[i][2]:
+            if boardInputs[i][0] == player1mark:
+                print (player1name + " WON THE GAME!")
+                return True
+            elif boardInputs[i][0] == player2mark:
+                print (player2name + " WON THE GAME!")
+                return True
+
+    # for vertical columns
+    for j in range(0,3):
+        if boardInputs[0][j] == boardInputs[1][j] == boardInputs[2][j]:
+            if boardInputs[0][j] == player1mark:
+                print(player1name + " WON THE GAME!")
+                return True
+            elif boardInputs[0][j] == player2mark:
+                print(player2name + " WON THE GAME!")
+                return True
+
+    # for upper to lower diagonal
+    if boardInputs[0][0] == boardInputs[1][1] == boardInputs[2][2]:
+        if boardInputs[0][0] == player1mark:
+           print(player1name + " WON THE GAME!")
+           return True
+        elif boardInputs[0][0] == player2mark:
+            print(player2name + " WON THE GAME!")
+            return True
+
+    # for lower to upper diagonal
+    if boardInputs[2][0] == boardInputs[1][1] == boardInputs[0][2]:
+        if boardInputs[2][0] == player1mark:
+            print(player1name + " WON THE GAME!")
+            return True
+        elif boardInputs[2][0] == player2mark:
+            print(player2name + " WON THE GAME!")
+            return True
+
+    return False
+
+def playTicTacToe():
+    printBoard()
+    while (checkIfWon() == False):
+        inputXandO()
+        printBoard()
+
+playTicTacToe() # Driver function
